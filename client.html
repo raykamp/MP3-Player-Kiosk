@@ -1,0 +1,123 @@
+<style type="text/css">
+    body, html {
+      height: 96%;
+    }
+    .outer {
+        display: table;
+        position: absolute;
+        height: 96%;
+        width: 96%;
+    }
+
+    .middle {
+        height: 100%;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    #title {
+        padding-top: -10px;
+        font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+        font-weight: bold;
+        font-size:28pt;
+        color: rgb(125,125,125);
+    }
+    #info {
+        padding-top: 12px;
+        line-height:28pt;
+        font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+        font-size:20pt;
+        color: rgb(125,125,125);
+    }
+    #comments {
+        padding-top: 30px;
+        font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+        font-size:16pt;
+        font-style:italic;
+        color: rgb(125,125,125);
+    }
+    #duration {
+        position:absolute; 
+        bottom:0;
+        width: 100%;
+        font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+        font-size:18pt;
+        color: rgb(125,125,125);
+    }
+    #dropinfo {
+        font-size:15pt;
+        padding-top:10px;
+        color: rgb(125,125,125);
+    }
+    #dropimage {
+        display: block;
+        margin-left: auto;
+        margin-right: auto
+    }
+</style>
+<!-- Screen is 800 x 480 pixels -->
+<html>
+    <body>
+        <!-- <img src="logo.png" style="float:left" width="100" > -->
+
+        <div class="outer">
+        <div id="dropzone" class="middle">
+        <div align="center">
+            <div id="dropinfo">
+            </div> 
+            <div id="title">
+                This is the Title
+            </div>
+            <div id="info">
+                First <br/>
+                Second! <br/>
+                third <br/>
+                FOURTH <br/>
+            </div>
+            <div id="comments">
+                Comments go here
+            </div>
+            <div id="duration" align="center" >
+                99:99
+            </div>
+        </div>
+        </div>
+        </div>
+
+    <script src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script>
+    // creating a new websocket
+    var socket = io.connect('http://localhost');
+    // on every message recived we print the new datas inside the #container div
+    socket.on('notification', function (data) {
+        // convert the json string into a valid javascript object
+        var _data = JSON.parse(data);
+        console.log(_data);
+
+        $("#dropzone").animate({'opacity': 0}, 1000, function () {
+
+            if(_data.title == null){_data.title="n/a";}
+            if(_data.artist == null){_data.artist="n/a";}
+            if(_data.album == null){_data.album="n/a";}
+            if(_data.year == null){_data.year="n/a";}
+            if(_data.v2.genre == null){_data.v2.genre="n/a";}
+            if(_data.v2.comments == null){_data.v2.comments="n/a";}
+            if(_data.v2.composer == null){_data.v2.composer="n/a";}
+
+            $("#title").html( _data.title );
+            $("#info").html( _data.artist + "<br/>" 
+                                    + _data.album + "<br/>"
+                                    + _data.year + "<br/>"
+                                    + _data.v2.genre + "<br/>"
+                                    );
+            $("#comments").html( _data.v2.comments );
+            $("#duration").html( _data.v2.composer );
+            $(this).animate({'opacity': 1}, 1000, function(){
+                
+            });
+        });
+
+    });
+    </script>
+    </body>
+</html>
