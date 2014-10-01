@@ -17,10 +17,6 @@ Requirements
 Installation 
 ================
 
-
-Steps: 
-
-
 1. Create SD card:
     1. On a Mac OS X computer, use the following “Command Line” instructions to copy the operating system image to the flash drive (This takes around 45 min): http://www.raspberrypi.org/documentation/installation/installing-images/mac.md
     1. Open “Disk Utility”. Examine the 4gb SD Card. 
